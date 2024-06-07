@@ -55,12 +55,15 @@ public class DateUtils {
     }
 
     public static String localDateToLongs(long day, long month, long year, String format) {
-        {
+
 
             DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern(format);
             return localDateFromLongs((int) day, (int) month, (int) year).format(outputFormatter);
 
         }
+    /*
+     * public static void main(String[] args) throws Exception { System.out.println(localDateToLongs(06, 06, 2024, "dd/MM/yyyy")); }
+     */
 
     }
-}
+
