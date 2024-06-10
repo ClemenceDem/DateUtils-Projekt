@@ -9,7 +9,6 @@ public class DateUtils {
 
         String strdate = day + "-" + month + "-" + year;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-
         return LocalDate.parse(strdate, formatter);
     }
 
@@ -24,10 +23,10 @@ public class DateUtils {
     }
 
     public static LocalDate stringsToLocalDate(String day, String month, String year) {
+
         int dayValue = Integer.parseInt(day);
         int monthValue = Integer.parseInt(month);
         int yearValue = Integer.parseInt(year);
-
         return LocalDate.of(yearValue, monthValue, dayValue);
     }
 
@@ -51,19 +50,17 @@ public class DateUtils {
 
         DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern(format);
         return localDateFromIntegers(day, month, year).format(outputFormatter);
-
     }
 
     public static String localDateToLongs(long day, long month, long year, String format) {
 
-
             DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern(format);
             return localDateFromLongs((int) day, (int) month, (int) year).format(outputFormatter);
-
         }
-    /*
-     * public static void main(String[] args) throws Exception { System.out.println(localDateToLongs(06, 06, 2024, "dd/MM/yyyy")); }
-     */
+
+    public static void main(String[] args) throws Exception {
+        System.out.println(localDateToString("06", "06", "2024", "dd-MM-yyyy"));
+    }
 
     }
 
