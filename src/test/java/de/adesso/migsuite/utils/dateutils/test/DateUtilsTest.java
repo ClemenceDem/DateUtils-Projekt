@@ -41,27 +41,19 @@ public class DateUtilsTest {
     }
 
     @Test
-    public void longsToLocalDate() throws ParseException {
+    public void testSingleStringToJodaLocalTime() throws ParseException {
+        org.joda.time.LocalDate expectedDate = new org.joda.time.LocalDate(2024, 05, 06);
+        assertEquals(DateUtils.singleStringToJodaLocalTime("06052024", "ddMMyyyy"), expectedDate);
+    }
+
+    @Test
+    public void testSingleStringToJavaLocalTime() throws ParseException {
         LocalDate expectedDate = LocalDate.of(2024, 05, 06);
-        assertEquals(DateUtils.longsToLocalDate(06l, 05l, 2024l), expectedDate);
+        assertEquals(DateUtils.singleStringToJavaLocalTime("06052024", "ddMMyyyy"), expectedDate);
     }
 
-    @Test
-    public void localDateToString() throws ParseException {
-        String expectedDate = "06-06-2024";
-        assertEquals(DateUtils.localDateToString("06", "06", "2024", "dd-MM-yyyy"), expectedDate);
-    }
 
-    @Test
-    public void localDateToIntengers() throws ParseException {
-        String expectedDate = "06-06-2024";
-        assertEquals(DateUtils.localDateToIntengers(06, 06, 2024, "dd-MM-yyyy"), expectedDate);
-    }
 
-    @Test
-    public void localDateToLongs() throws ParseException {
-        String expectedDate = "2024-06-06";
-        assertEquals(DateUtils.elementsToJodaLocalDate(06l, 06l, 2024l), expectedDate);
-    }
+
 
 }

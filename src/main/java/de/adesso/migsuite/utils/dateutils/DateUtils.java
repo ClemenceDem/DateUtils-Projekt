@@ -128,10 +128,4 @@ public class DateUtils {
         java.time.format.DateTimeFormatter dateFormatter = java.time.format.DateTimeFormatter.ofPattern(dateFormat);
         return java.time.LocalDate.parse(date, dateFormatter);
     }
-
-    /*
-     * public static void main(String[] args) throws Exception {
-     * 
-     * System.out.println(singleStringToJodaLocalTime("20010201", "yyyyMMdd")); }
-     */
 }
