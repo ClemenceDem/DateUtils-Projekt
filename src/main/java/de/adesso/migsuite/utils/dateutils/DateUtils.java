@@ -1,9 +1,5 @@
 package de.adesso.migsuite.utils.dateutils;
 
-import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
 /**
  * Die Klasse DateUtils bietet Hilfsmethoden zur Umwandlung von Datumsangaben in verschiedene Date-Objekte von org.joda.time und java.time.
  * 
@@ -28,11 +24,11 @@ public class DateUtils {
      * @return Ein org.joda.time.LocalDate Objekt, das das übergebene Datum repräsentiert.
      */
 
-    public static LocalDate elementsToJodaLocalTime(String day, String month, String year) {
+    public static org.joda.time.LocalDate elementsToJodaLocalTime(String day, String month, String year) {
 
         String dateString = day + "-" + month + "-" + year;
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("dd-MM-yyyy");
-        return LocalDate.parse(dateString, formatter);
+        org.joda.time.format.DateTimeFormatter formatter = org.joda.time.format.DateTimeFormat.forPattern("dd-MM-yyyy");
+        return org.joda.time.LocalDate.parse(dateString, formatter);
     }
 
     /**
@@ -43,9 +39,9 @@ public class DateUtils {
      * @param year Das Jahr als Integer.
      * @return Ein org.joda.time.LocalDate Objekt, das das übergebene Datum repräsentiert.
      */
-    public static LocalDate elementsToJodaLocalDate(int day, int month, int year) {
+    public static org.joda.time.LocalDate elementsToJodaLocalDate(int day, int month, int year) {
 
-        return new LocalDate(year, month, day);
+        return new org.joda.time.LocalDate(year, month, day);
     }
 
     /**
@@ -57,9 +53,9 @@ public class DateUtils {
      * @return Ein org.joda.time.LocalDate Objekt, das das übergebene Datum repräsentiert.
      */
 
-    public static LocalDate elementsToJodaLocalDate(long day, long month, long year) {
+    public static org.joda.time.LocalDate elementsToJodaLocalDate(long day, long month, long year) {
 
-        return new LocalDate((int) year, (int) month, (int) day);
+        return new org.joda.time.LocalDate((int) year, (int) month, (int) day);
     }
 
     /**
@@ -110,10 +106,10 @@ public class DateUtils {
      * @param dateFormat Das Format des Datumstrings.
      * @return Ein org.joda.time.LocalDate Objekt, das das angegebene Datum repräsentiert.
      */
-    public static LocalDate singleStringToJodaLocalTime(String date, String dateFormat) {
+    public static org.joda.time.LocalDate singleStringToJodaLocalTime(String date, String dateFormat) {
 
-        DateTimeFormatter dateFormatter = DateTimeFormat.forPattern(dateFormat);
-        return LocalDate.parse(date, dateFormatter);
+        org.joda.time.format.DateTimeFormatter dateFormatter = org.joda.time.format.DateTimeFormat.forPattern(dateFormat);
+        return org.joda.time.LocalDate.parse(date, dateFormatter);
     }
 
     /**
@@ -128,4 +124,5 @@ public class DateUtils {
         java.time.format.DateTimeFormatter dateFormatter = java.time.format.DateTimeFormatter.ofPattern(dateFormat);
         return java.time.LocalDate.parse(date, dateFormatter);
     }
+
 }
