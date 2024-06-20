@@ -1,5 +1,7 @@
 package de.adesso.migsuite.utils.dateutils;
 
+import org.joda.time.LocalDate;
+
 /**
  * Die Klasse DateUtils bietet Hilfsmethoden zur Umwandlung von Datumsangaben in verschiedene Date-Objekte von org.joda.time und java.time.
  * 
@@ -24,7 +26,7 @@ public class DateUtils {
      * @return Ein org.joda.time.LocalDate Objekt, das das übergebene Datum repräsentiert.
      */
 
-    public static org.joda.time.LocalDate elementsToJodaLocalTime(String day, String month, String year) {
+    public static org.joda.time.LocalDate elementsToJodaLocalDate(String day, String month, String year) {
 
         String dateString = day + "-" + month + "-" + year;
         org.joda.time.format.DateTimeFormatter formatter = org.joda.time.format.DateTimeFormat.forPattern("dd-MM-yyyy");
@@ -59,6 +61,19 @@ public class DateUtils {
     }
 
     /**
+     * Erstellt ein org.joda.time.LocalDate Objekt aus einem übergebenen Datum in einem String ohne Trennzeichen und einem Format.
+     *
+     * @param date Der Datumstring ohne Trennzeichen.
+     * @param dateFormat Das Format des Datumstrings.
+     * @return Ein org.joda.time.LocalDate Objekt, das das angegebene Datum repräsentiert.
+     */
+    public static org.joda.time.LocalDate singleStringToJodaLocalDate(String date, String dateFormat) {
+
+        org.joda.time.format.DateTimeFormatter dateFormatter = org.joda.time.format.DateTimeFormat.forPattern(dateFormat);
+        return org.joda.time.LocalDate.parse(date, dateFormatter);
+    }
+
+    /**
      * Erstellt ein java.time.LocalDate Objekt aus übergebenen Strings für Tag, Monat und Jahr.
      *
      * @param day Tag als String.
@@ -66,7 +81,7 @@ public class DateUtils {
      * @param year Jahr als String.
      * @return Ein java.time.LocalDate Objekt, das das angegebene Datum repräsentiert.
      */
-    public static java.time.LocalDate elementsToTimeLocalTime(String day, String month, String year) {
+    public static java.time.LocalDate elementsToTimeLocalDate(String day, String month, String year) {
 
         String dateString = day + "-" + month + "-" + year;
         java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -81,7 +96,7 @@ public class DateUtils {
      * @param year Das Jahr als int-Wert.
      * @return Ein java.time.LocalDate Objekt, das das angegebene Datum repräsentiert.
      */
-    public static java.time.LocalDate elementsToTimeLocalTime(int day, int month, int year) {
+    public static java.time.LocalDate elementsToTimeLocalDate(int day, int month, int year) {
 
         return java.time.LocalDate.of(year, month, day);
     }
@@ -94,35 +109,64 @@ public class DateUtils {
      * @param year Das Jahr als long-Wert.
      * @return Ein java.time.LocalDate Objekt, das das angegebene Datum repräsentiert.
      */
-    public static java.time.LocalDate elementsToTimeLocalTime(long day, long month, long year) {
+    public static java.time.LocalDate elementsToTimeLocalDate(long day, long month, long year) {
 
         return java.time.LocalDate.of((int) year, (int) month, (int) day);
     }
 
     /**
-     * Erstellt ein org.joda.time.LocalDate Objekt aus einem übergebenen Datum in einem String ohne Trennzeichen und einem Format.
-     *
-     * @param date Der Datumstring ohne Trennzeichen.
-     * @param dateFormat Das Format des Datumstrings.
-     * @return Ein org.joda.time.LocalDate Objekt, das das angegebene Datum repräsentiert.
-     */
-    public static org.joda.time.LocalDate singleStringToJodaLocalTime(String date, String dateFormat) {
-
-        org.joda.time.format.DateTimeFormatter dateFormatter = org.joda.time.format.DateTimeFormat.forPattern(dateFormat);
-        return org.joda.time.LocalDate.parse(date, dateFormatter);
-    }
-
-    /**
-     * Erstellt ein org.joda.time.LocalDate Objekt aus einem übergebenen Datum in einem String ohne Trennzeichen und einem Format.
+     * Erstellt ein java.time.LocalDate Objekt aus einem übergebenen Datum in einem String ohne Trennzeichen und einem Format.
      *
      * @param dateString Der Datumstring ohne Trennzeichen.
      * @param format Das Format des Datumstrings.
-     * @return Ein org.joda.time.LocalDate Objekt, das das angegebene Datum repräsentiert.
+     * @return Ein java.time.LocalDate Objekt, das das angegebene Datum repräsentiert.
      */
-    public static java.time.LocalDate singleStringToJavaLocalTime(String date, String dateFormat) {
+    public static java.time.LocalDate singleStringToJavaLocalDate(String date, String dateFormat) {
 
         java.time.format.DateTimeFormatter dateFormatter = java.time.format.DateTimeFormatter.ofPattern(dateFormat);
         return java.time.LocalDate.parse(date, dateFormatter);
+    }
+
+
+
+    public static <T> org.joda.time.LocalDate jodaDateFromParameter(T day, T month, T year, T type) {
+
+        if (!(type instanceof org.joda.time.LocalDate)) {
+            throw new IllegalArgumentException("Unsupported type. " + type + " is not an instance of org.joda.time.LocalDate.");
+        }
+        return new org.joda.time.LocalDate(getTypValue(year), getTypValue(month), getTypValue(day));
+    }
+
+
+    public static <T> java.time.LocalDate javaTimeDateFromParameter(T day, T month, T year, T type) {
+
+        if (!(type instanceof java.time.LocalDate)) {
+            throw new IllegalArgumentException("Unsupported type. " + type + " is not an instance of java.time.LocalDate.");
+        }
+        return java.time.LocalDate.of(getTypValue(year), getTypValue(month), getTypValue(day));
+    }
+
+
+    private static <T> int getTypValue(T value) {
+        if (value instanceof String) {
+            if (((String) value).matches("[0-9]+")) {
+            return Integer.parseInt((String) value);
+            } else {
+                throw new IllegalArgumentException("Unsupported type. " + value + " cannot be converted to an Integer");
+            }
+        } else if (value instanceof Long) {
+            return ((Long) value).intValue();
+        } else if (value instanceof Integer) {
+            return (Integer) value;
+        } else {
+            throw new IllegalArgumentException("Unsupported type. " + value + " cannot be converted to an Integer");
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
+
+        System.out.println(jodaDateFromParameter(20l, 02, 2024, new LocalDate()));
+
     }
 
 }

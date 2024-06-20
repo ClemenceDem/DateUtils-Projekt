@@ -13,7 +13,7 @@ public class DateUtilsTest {
     @Test
     public void testElementsToJodaLocalTime() throws ParseException {
         org.joda.time.LocalDate expectedDate = new org.joda.time.LocalDate(2001, 01, 27);
-        assertEquals(DateUtils.elementsToJodaLocalTime("27", "01", "2001"), expectedDate);
+        assertEquals(DateUtils.elementsToJodaLocalDate("27", "01", "2001"), expectedDate);
     }
 
     @Test
@@ -31,29 +31,37 @@ public class DateUtilsTest {
     @Test
     public void testElementsToTimeLocalTime1() throws ParseException {
         LocalDate expectedDate = LocalDate.of(2024, 05, 06);
-        assertEquals(DateUtils.elementsToTimeLocalTime("06", "05", "2024"), expectedDate);
+        assertEquals(DateUtils.elementsToTimeLocalDate("06", "05", "2024"), expectedDate);
     }
 
     @Test
     public void testElementsToTimeLocalTime() throws ParseException {
         LocalDate expectedDate = LocalDate.of(2024, 05, 06);
-        assertEquals(DateUtils.elementsToTimeLocalTime(06, 05, 2024), expectedDate);
+        assertEquals(DateUtils.elementsToTimeLocalDate(06, 05, 2024), expectedDate);
     }
 
     @Test
     public void testSingleStringToJodaLocalTime() throws ParseException {
         org.joda.time.LocalDate expectedDate = new org.joda.time.LocalDate(2024, 05, 06);
-        assertEquals(DateUtils.singleStringToJodaLocalTime("06052024", "ddMMyyyy"), expectedDate);
+        assertEquals(DateUtils.singleStringToJodaLocalDate("06052024", "ddMMyyyy"), expectedDate);
     }
 
     @Test
     public void testSingleStringToJavaLocalTime() throws ParseException {
         LocalDate expectedDate = LocalDate.of(2024, 05, 06);
-        assertEquals(DateUtils.singleStringToJavaLocalTime("06052024", "ddMMyyyy"), expectedDate);
+        assertEquals(DateUtils.singleStringToJavaLocalDate("06052024", "ddMMyyyy"), expectedDate);
     }
 
+    @Test
+    public void jodaDateFromParameter() throws ParseException {
+        org.joda.time.LocalDate expectedDate = new org.joda.time.LocalDate(2024, 02, 03);
+        assertEquals(DateUtils.jodaDateFromParameter(03L, "02", 2024, expectedDate), expectedDate);
+    }
 
-
-
+    @Test
+    public void javaDateFromParameter() throws ParseException {
+        java.time.LocalDate expectedDate = java.time.LocalDate.of(2024, 02, 03);
+        assertEquals(DateUtils.javaTimeDateFromParameter(03L, "02", 2024, expectedDate), expectedDate);
+    }
 
 }
