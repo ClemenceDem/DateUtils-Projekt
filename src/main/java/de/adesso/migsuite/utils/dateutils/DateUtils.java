@@ -128,7 +128,17 @@ public class DateUtils {
     }
 
 
-
+    /**
+     * Konvertiert die angegebenen Tag-, Monat- und Jahr-Parameter in ein Joda-Time LocalDate-Objekt.
+     * 
+     * @param <T> der Typ der Eingabeparameter
+     * @param day der Tag-Wert
+     * @param month der Monat-Wert
+     * @param year der Jahr-Wert
+     * @param type der Typ, der verwendet wird, um eine Instanz von org.joda.time.LocalDate zu überprüfen
+     * @return ein LocalDate-Objekt, das den angegebenen Tag, Monat und Jahr repräsentiert
+     * @throws IllegalArgumentException wenn der type-Parameter keine Instanz von org.joda.time.LocalDate ist
+     */
     public static <T> org.joda.time.LocalDate jodaDateFromParameter(T day, T month, T year, T type) {
 
         if (!(type instanceof org.joda.time.LocalDate)) {
@@ -138,6 +148,17 @@ public class DateUtils {
     }
 
 
+    /**
+     * Konvertiert die angegebenen Tag-, Monat- und Jahr-Parameter in ein java.time.LocalDate-Objekt.
+     * 
+     * @param <T> der Typ der Eingabeparameter
+     * @param day der Tag-Wert
+     * @param month der Monat-Wert
+     * @param year der Jahr-Wert
+     * @param type der Typ, der verwendet wird, um eine Instanz von java.time.LocalDate zu überprüfen
+     * @return ein LocalDate-Objekt, das den angegebenen Tag, Monat und Jahr repräsentiert
+     * @throws IllegalArgumentException wenn der type-Parameter keine Instanz von java.time.LocalDate ist
+     */
     public static <T> java.time.LocalDate javaTimeDateFromParameter(T day, T month, T year, T type) {
 
         if (!(type instanceof java.time.LocalDate)) {
@@ -146,7 +167,16 @@ public class DateUtils {
         return java.time.LocalDate.of(getTypValue(year), getTypValue(month), getTypValue(day));
     }
 
-
+    /**
+     * Extrahiert einen Integer-Wert aus dem gegebenen Parameter.
+     * 
+     * Diese Methode unterstützt die Konvertierung von String, Long und Integer-Typen in einen Integer-Wert.
+     * 
+     * @param <T> der Typ des Eingabeparameters
+     * @param value der zu extrahierende Wert
+     * @return der extrahierte Integer-Wert
+     * @throws IllegalArgumentException wenn der Eingabeparameter nicht in einen Integer-Wert konvertiert werden kann
+     */
     private static <T> int getTypValue(T value) {
         if (value instanceof String) {
             if (((String) value).matches("[0-9]+")) {
@@ -163,9 +193,10 @@ public class DateUtils {
         }
     }
 
+
     public static void main(String[] args) throws Exception {
 
-        System.out.println(jodaDateFromParameter(20l, 02, 2024, new LocalDate()));
+        System.out.println(jodaDateFromParameter(20, 02, 2024, new LocalDate()));
 
     }
 
