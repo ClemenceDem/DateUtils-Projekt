@@ -1,19 +1,12 @@
 package de.adesso.migsuite.utils.dateutils;
 
-import org.joda.time.LocalDate;
+import java.time.LocalDate;
 
 /**
  * Die Klasse DateUtils bietet Hilfsmethoden zur Umwandlung von Datumsangaben in verschiedene Date-Objekte von org.joda.time und java.time.
  * 
  * Diese Klasse enthält Methoden zur Erstellung von LocalDate-Objekten aus übergebenen Strings oder numerischen Werten sowie zur Formatierung und
  * Umwandlung von Datumsstrings in spezifizierte Formate.
- * 
- * Methoden: - elementsToJodaLocalTime: Erstellt ein org.joda.time.LocalDate Objekt aus übergebenen Strings für Tag, Monat und Jahr. -
- * elementsToJodaLocalDate: Erstellt ein org.joda.time.LocalDate Objekt aus übergebenen Integern oder long Werten für Tag, Monat und Jahr. -
- * elementsToTimeLocalTime: Erstellt ein java.time.LocalDate Objekt aus übergebenen Strings, Integern oder long Werten für Tag, Monat und Jahr. -
- * singleStringToJodaLocalTime: Erstellt ein org.joda.time.LocalDate Objekt aus einem übergebenen Datum in einem String ohne Trennzeichen und einem
- * Format. - singleStringToJavaLocalTime: Erstellt ein java.time.LocalDate Objekt aus einem übergebenen Datum in einem String ohne Trennzeichen und
- * einem Format.
  */
 public class DateUtils {
 
@@ -142,9 +135,9 @@ public class DateUtils {
     public static <T> org.joda.time.LocalDate jodaDateFromParameter(T day, T month, T year, T type) {
 
         if (!(type instanceof org.joda.time.LocalDate)) {
-            throw new IllegalArgumentException("Unsupported type. " + type + " is not an instance of org.joda.time.LocalDate.");
+            throw new IllegalArgumentException("Nicht unterstützter Typ. " + type + " ist nicht eine Instanz von org.joda.time.LocalDate.");
         }
-        return new org.joda.time.LocalDate(getTypValue(year), getTypValue(month), getTypValue(day));
+        return new org.joda.time.LocalDate(gibTypWertZurueck(year), gibTypWertZurueck(month), gibTypWertZurueck(day));
     }
 
 
@@ -162,9 +155,9 @@ public class DateUtils {
     public static <T> java.time.LocalDate javaTimeDateFromParameter(T day, T month, T year, T type) {
 
         if (!(type instanceof java.time.LocalDate)) {
-            throw new IllegalArgumentException("Unsupported type. " + type + " is not an instance of java.time.LocalDate.");
+            throw new IllegalArgumentException("Nicht unterstützter Typ. " + type + " ist nicht eine Instanz von java.time.LocalDate.");
         }
-        return java.time.LocalDate.of(getTypValue(year), getTypValue(month), getTypValue(day));
+        return java.time.LocalDate.of(gibTypWertZurueck(year), gibTypWertZurueck(month), gibTypWertZurueck(day));
     }
 
     /**
@@ -173,30 +166,63 @@ public class DateUtils {
      * Diese Methode unterstützt die Konvertierung von String, Long und Integer-Typen in einen Integer-Wert.
      * 
      * @param <T> der Typ des Eingabeparameters
-     * @param value der zu extrahierende Wert
+     * @param wert der zu extrahierende Wert
      * @return der extrahierte Integer-Wert
      * @throws IllegalArgumentException wenn der Eingabeparameter nicht in einen Integer-Wert konvertiert werden kann
      */
-    private static <T> int getTypValue(T value) {
-        if (value instanceof String) {
-            if (((String) value).matches("[0-9]+")) {
-            return Integer.parseInt((String) value);
+    private static <T> int gibTypWertZurueck(T wert) {
+        if (wert instanceof String) {
+            if (((String) wert).matches("[0-9]+")) {
+                return Integer.parseInt((String) wert);
             } else {
-                throw new IllegalArgumentException("Unsupported type. " + value + " cannot be converted to an Integer");
+                throw new IllegalArgumentException("Nicht unterstützter Typ. " + wert + " kann nicht in Intenger umgewandelt werden");
             }
-        } else if (value instanceof Long) {
-            return ((Long) value).intValue();
-        } else if (value instanceof Integer) {
-            return (Integer) value;
+        } else if (wert instanceof Long) {
+            return ((Long) wert).intValue();
+        } else if (wert instanceof Integer) {
+            return (Integer) wert;
         } else {
-            throw new IllegalArgumentException("Unsupported type. " + value + " cannot be converted to an Integer");
+            throw new IllegalArgumentException("Nicht unterstützter Typ. " + wert + " kann nicht in Intenger umgewandelt werden");
         }
     }
 
+    /**
+     * Erstellt ein java.time.LocalDate Objekt aus übergebenen Werten für Tag, Monat und Jahr. Unterstützt String, int und long als Eingabetypen.
+     *
+     * @param day Tag als String, int oder long.
+     * @param month Monat als String, int oder long.
+     * @param year Jahr als String, int oder long.
+     * @return Ein java.time.LocalDate Objekt, das das angegebene Datum repräsentiert.
+     */
+    public static <T, U, V> LocalDate elementsToTimeLocalDate(T day, U month, V year) {
+        int dayInt = convertToInt(day);
+        int monthInt = convertToInt(month);
+        int yearInt = convertToInt(year);
+
+        return LocalDate.of(yearInt, monthInt, dayInt);
+    }
+
+    /**
+     * Konvertiert einen beliebigen Typ (String, int oder long) in einen int-Wert.
+     *
+     * @param value Der Wert als String, int oder long.
+     * @return Der konvertierte Wert als int.
+     */
+    private static <T> int convertToInt(T value) {
+        if (value instanceof String) {
+            return Integer.parseInt((String) value);
+        } else if (value instanceof Integer) {
+            return (Integer) value;
+        } else if (value instanceof Long) {
+            return ((Long) value).intValue();
+        } else {
+            throw new IllegalArgumentException("Unsupported type: " + value.getClass().getName());
+        }
+    }
 
     public static void main(String[] args) throws Exception {
 
-        System.out.println(jodaDateFromParameter(20, 02, 2024, new LocalDate()));
+        System.out.println(elementsToTimeLocalDate("20", "02", "2024"));
 
     }
 
