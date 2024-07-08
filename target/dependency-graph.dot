@@ -1,0 +1,9 @@
+digraph "DateUtils" {
+  node [shape="box",style="rounded",fontname="Helvetica",fontsize="14"]
+  edge [fontsize="10",fontname="Helvetica"]
+
+  // Node Definitions:
+  "de.adesso.migsuite.utils.dateutils:DateUtils:jar:compile"[label=<DateUtils>]
+
+  // Edge Definitions:
+}
