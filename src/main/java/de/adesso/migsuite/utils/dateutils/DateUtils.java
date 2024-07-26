@@ -1,5 +1,6 @@
 package de.adesso.migsuite.utils.dateutils;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 
 import org.slf4j.Logger;
@@ -14,49 +15,8 @@ import org.slf4j.LoggerFactory;
 public class DateUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DateUtils.class);
-    /*
-    *//**
-        * Erstellt ein org.joda.time.LocalDate Objekt aus übergebenen Strings für Tag, Monat und Jahr.
-        *
-        * @param day Der Tag als String.
-        * @param month Der Monat als String.
-        * @param year Das Jahr als String.
-        * @return Ein org.joda.time.LocalDate Objekt, das das übergebene Datum repräsentiert.
-        * @throws IllegalArgumentException Wenn das Datumsformat ungültig ist/Wenn der Tag, Monat oder Jahr ungültige Werte haben.
-        */
-    /*
-     * public static org.joda.time.LocalDate elementsToJodaLocalDate(String day, String month, String year) throws
-     * org.joda.time.IllegalFieldValueException { try { // Kombiniere den Tag, Monat und Jahr in einen einzelnen String im Format "dd-MM-yyyy" String
-     * dateString = day + "-" + month + "-" + year; org.joda.time.format.DateTimeFormatter formatter =
-     * org.joda.time.format.DateTimeFormat.forPattern("dd-MM-yyyy"); return org.joda.time.LocalDate.parse(dateString, formatter); } catch
-     * (IllegalArgumentException e) { LOGGER.info("Das Datumsformat ist ungültig: {}-{}-{}", day, month, year, e); throw new
-     * IllegalArgumentException("Das Datumsformat ist ungültig: " + day + "-" + month + "-" + year, e); } }
-     *//**
-        * Erstellt ein org.joda.time.LocalDate Objekt aus übergebenen Integern für Tag, Monat und Jahr.
-        *
-        * @param day Der Tag als Integer.
-        * @param month Der Monat als Integer.
-        * @param year Das Jahr als Integer.
-        * @return Ein org.joda.time.LocalDate Objekt, das das übergebene Datum repräsentiert.
-        */
-    /*
-     * public static org.joda.time.LocalDate elementsToJodaLocalDate(int day, int month, int year) {
-     * 
-     * return new org.joda.time.LocalDate(year, month, day); }
-     * 
-     *//**
-        * Erstellt ein org.joda.time.LocalDate Objekt aus übergebenen long Werten für Tag, Monat und Jahr.
-        *
-        * @param day Der Tag als long.
-        * @param month Der Monat als long.
-        * @param year Das Jahr als long.
-        * @return Ein org.joda.time.LocalDate Objekt, das das übergebene Datum repräsentiert.
-        *//*
-           * 
-           * public static org.joda.time.LocalDate elementsToJodaLocalDate(long day, long month, long year) {
-           * 
-           * return new org.joda.time.LocalDate((int) year, (int) month, (int) day); }
-           */
+
+
 
     /**
      * Erstellt ein org.joda.time.LocalDate Objekt aus einem übergebenen Datum in einem String ohne Trennzeichen und einem Format.
@@ -71,50 +31,6 @@ public class DateUtils {
         return org.joda.time.LocalDate.parse(date, dateFormatter);
     }
 
-    /**
-     * Erstellt ein java.time.LocalDate Objekt aus übergebenen Strings für Tag, Monat und Jahr.
-     *
-     * @param day Tag als String.
-     * @param month Monat als String.
-     * @param year Jahr als String.
-     * @return Ein java.time.LocalDate Objekt, das das angegebene Datum repräsentiert.
-     */
-    /*
-     * public static java.time.LocalDate elementsToTimeLocalDate(String day, String month, String year) {
-     * 
-     * try { String dateString = day + "-" + month + "-" + year; java.time.format.DateTimeFormatter formatter =
-     * java.time.format.DateTimeFormatter.ofPattern("dd-MM-yyyy"); return java.time.LocalDate.parse(dateString, formatter);
-     * 
-     * } catch (DateTimeParseException e) { LOGGER.info("Ungültiges Datumsformat: {}-{}-{}", day, month, year, e); throw new
-     * IllegalArgumentException("Ungültiges Datumsformat: " + day + "-" + month + "-" + year, e); } catch (IllegalArgumentException e) {
-     * LOGGER.info("Ungültige Datumswerte: Tag={}, Monat={}, Jahr={}", day, month, year, e); throw new
-     * IllegalArgumentException("Ungültige Datumswerte: Tag=" + day + ", Monat=" + month + ", Jahr=" + year, e); } }
-     * 
-     *//**
-        * Erstellt ein java.time.LocalDate Objekt aus übergebenen int-Werten für Tag, Monat und Jahr.
-        *
-        * @param day Der Tag als int-Wert.
-        * @param month Der Monat als int-Wert.
-        * @param year Das Jahr als int-Wert.
-        * @return Ein java.time.LocalDate Objekt, das das angegebene Datum repräsentiert.
-        */
-    /*
-     * public static java.time.LocalDate elementsToTimeLocalDate(int day, int month, int year) {
-     * 
-     * return java.time.LocalDate.of(year, month, day); }
-     * 
-     *//**
-        * Erstellt ein java.time.LocalDate Objekt aus übergebenen long-Werten für Tag, Monat und Jahr.
-        *
-        * @param day Der Tag als long-Wert.
-        * @param month Der Monat als long-Wert.
-        * @param year Das Jahr als long-Wert.
-        * @return Ein java.time.LocalDate Objekt, das das angegebene Datum repräsentiert.
-        *//*
-           * public static java.time.LocalDate elementsToTimeLocalDate(long day, long month, long year) {
-           * 
-           * return java.time.LocalDate.of((int) year, (int) month, (int) day); }
-           */
 
     /**
      * Erstellt ein java.time.LocalDate Objekt aus einem übergebenen Datum in einem String ohne Trennzeichen und einem Format.
@@ -144,18 +60,22 @@ public class DateUtils {
         int dayValue = gibTypWertZurueck(day);
         int monthValue = gibTypWertZurueck(month);
         int yearValue = gibTypWertZurueck(year);
+        org.joda.time.LocalDate result = null;
         try {
             if (!(type instanceof org.joda.time.LocalDate)) {
-                throw new IllegalArgumentException("Nicht unterstützter Typ. " + type + " ist nicht eine Instanz von org.joda.time.LocalDate.");
+                LOGGER.error("Ungueltiger Typ.");
+                throw new IllegalArgumentException("Nicht unterstuetzter Typ " + type + " ist nicht eine Instanz von joda.time.LocalDate.");
             }
-            org.joda.time.LocalDate result = new org.joda.time.LocalDate(yearValue, monthValue, dayValue);
+            result = new org.joda.time.LocalDate(yearValue, monthValue, dayValue);
             LOGGER.info("Datum erfolgreich erstellt: {}", result);
-            return result;
 
         } catch (IllegalArgumentException e) {
-            LOGGER.error("Fehler beim Erstellen des Datums mit den Werten: Tag={}, Monat={}, Jahr={}, Typ={}", day, month, year, type, e);
-            throw e;
+            // LOGGER.error("Fehler beim Erstellen des Datums mit den Werten: Tag={}, Monat={}, Jahr={}, Typ={}", day, month, year, type, e);
+            //throw new IllegalArgumentException("Nicht unterstuetzter Typ" + type + " ist nicht eine Instanz von joda.time.LocalDate.");
+            // LOGGER.error(e.getMessage());
+            throw new IllegalArgumentException(e.getMessage());
         }
+        return result;
 
     }
 
@@ -174,17 +94,19 @@ public class DateUtils {
         int dayValue = gibTypWertZurueck(day);
         int monthValue = gibTypWertZurueck(month);
         int yearValue = gibTypWertZurueck(year);
+        java.time.LocalDate result = null;
         try {
             if (!(type instanceof java.time.LocalDate)) {
-                throw new IllegalArgumentException("Nicht unterstützter Typ. " + type + " ist nicht eine Instanz von java.time.LocalDate.");
+                LOGGER.error("Ungueltiger Typ.");
+                throw new IllegalArgumentException("Nicht unterstuetzter Typ " + type + " ist nicht eine Instanz von java.time.LocalDate.");
             }
-            java.time.LocalDate result = java.time.LocalDate.of(yearValue, monthValue, dayValue);
+            result = java.time.LocalDate.of(yearValue, monthValue, dayValue);
             LOGGER.info("Datum erfolgreich erstellt: {}", result);
-            return result;
         } catch (IllegalArgumentException e) {
-            LOGGER.error("Fehler beim Erstellen des Datums mit den Werten: Tag={}, Monat={}, Jahr={}, Typ={}", day, month, year, type, e);
-            throw e;
+            // LOGGER.error("Fehler beim Erstellen des Datums mit den Werten: Tag={}, Monat={}, Jahr={}, Typ={}", day, month, year, type, e);
+            throw new IllegalArgumentException(e.getMessage());
         }
+        return result;
     }
 
     /**
@@ -197,42 +119,34 @@ public class DateUtils {
      * @return der extrahierte Integer-Wert
      * @throws IllegalArgumentException wenn der Eingabeparameter nicht in einen Integer-Wert konvertiert werden kann
      */
-    private static <T> int gibTypWertZurueck(T wert) {
+    public static <T> int gibTypWertZurueck(T wert) {
         int result = 0;
+        if (wert == null) {
+            LOGGER.warn("ungültiger Parameter Typ. 0 wird zurückgeliefert");
+            throw new IllegalArgumentException("Input cannot be null");
+        } else {
+
         if (wert instanceof String) {
-            String stringValue = (String) wert;
-            if ((stringValue.matches("[0-9]+"))) {
-                try {
-                    result = Integer.parseInt(stringValue);
-                    LOGGER.info("Der String-Wert '{}' wurde erfolgreich in einen Integer-Wert konvertiert: {}", wert, result);
-                } catch (NumberFormatException e) {
-                    LOGGER.error("Fehler beim Konvertieren des String-Wertes '{}': {}", wert, e);
-                    throw new IllegalArgumentException("Ungültiges String-Format: " + wert, e);
-                }
+            if (((String) wert).isEmpty()) {
+                throw new IllegalArgumentException("Input cannot be null or empty");
+            }
+
+            try {
+                result = Integer.parseInt((String) wert);
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("Input is not a valid integer");
             }
         } else if (wert instanceof Long) {
             Long longValue = (Long) wert;
-            try {
-                result = (longValue.intValue());
-                LOGGER.info("Der Long-Wert '{}' wurde erfolgreich in einen Integer-Wert konvertiert: {}", wert, result);
-            } catch (ArithmeticException e) {
-                LOGGER.error("Long-Wert ist zu groß, um in einen int zu passen'{}': {}", wert, e);
-            }
+            result = longValue.intValue();
+            LOGGER.info("Der Long-Wert '{}' wurde erfolgreich in einen Integer-Wert konvertiert: {}", wert, result);
+
         } else if (wert instanceof Integer) {
             result = (Integer) wert;
-            try {
-                LOGGER.info("Der Integer-Wert '{}' wurde direkt zurückgegeben", wert);
-            } catch (IllegalArgumentException e) {
-                LOGGER.error("Ungültiger Argumenttyp: {}", wert, e);
-                throw e;
-
+            LOGGER.info("Der Integer-Wert '{}' wurde direkt zurückgegeben", wert);
             }
-        } else {
-            LOGGER.warn("ungültiger Parameter Typ. 0 wird zurückgeliefert");
         }
-
         return result;
-
     }
 
     /**
@@ -249,17 +163,14 @@ public class DateUtils {
         int yearValue = gibTypWertZurueck(year);
         try {
             LOGGER.info("Datum erfolgreich erstellt: {}", LocalDate.of(yearValue, monthValue, dayValue));
-            return LocalDate.of(yearValue, monthValue, dayValue);
-        } catch (IllegalArgumentException e) {
-            LOGGER.error("Fehler beim Erstellen des Datums mit den Werten: Tag={}, Monat={}, Jahr={}", day, month, year, e);
-            throw e;
+
+        } catch (DateTimeException e) {
+            LOGGER.error("Datum könnte nicht erstellt werden.");
+            throw new DateTimeException("Fehler beim Erstellen des Datums.");
         }
+        return LocalDate.of(yearValue, monthValue, dayValue);
     }
 
-    public static void main(String[] args) throws Exception {
-
-        System.out.println(javaTimeDateFromParameter("25", "1", "2023", LocalDate.now()));
-
-    }
+    
 
 }
